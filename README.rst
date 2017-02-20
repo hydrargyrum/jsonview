@@ -3,10 +3,14 @@ jsonview
 
 jsonview is a GUI JSON viewer.
 
+.. image:: screenshot.png
+
 Sample usage:
 
     jsonview some_file.json
+
     curl https://someurl | jsonview -
+
     jq .something some_file.json | jsonview -
 
 If given a file name as argument, that JSON file will be viewed. If "-" is used as argument, stdin should contain JSON data.
