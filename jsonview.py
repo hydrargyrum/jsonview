@@ -6,6 +6,7 @@ import subprocess
 import sys
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLineEdit, QTreeView
+from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
 
@@ -32,7 +33,7 @@ class ObjConverter(QStandardItemModel):
             return ret
         elif isinstance(obj, dict):
             ret = []
-            for k in obj:
+            for k in sorted(obj):
                 item = QStandardItem(k)
                 item.appendRows(self.convert(obj[k]))
                 self.pack(item)
