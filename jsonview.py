@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from collections import OrderedDict
 import json
 import os
 import subprocess
@@ -45,7 +46,7 @@ class ObjConverter(QStandardItemModel):
 def loadCommand():
     if os.path.isfile(le.text()):
         with open(le.text()) as fd:
-            obj = json.load(fd)
+            obj = loadJson(fd.read())
     else:
         try:
             out = subprocess.check_output(le.text(), shell=True).decode('utf-8')
@@ -53,10 +54,10 @@ def loadCommand():
             obj = str(e)
         else:
             try:
-                obj = json.loads(out)
+                obj = loadJson(out)
             except ValueError as e:
                 try:
-                    obj = json.loads('[%s]' % ','.join(out.strip().split('\n')))
+                    obj = loadJson('[%s]' % ','.join(out.strip().split('\n')))
                 except ValueError:
                     obj = str(e)
 
@@ -79,6 +80,10 @@ class View(QTreeView):
             self.setRecursive(idx, not self.isExpanded(idx))
         else:
             super(View, self).mouseDoubleClickEvent(ev)
+
+
+def loadJson(txt):
+    return json.loads(txt, object_hook=OrderedDict)
 
 
 if __name__ == '__main__':
@@ -104,10 +109,10 @@ if __name__ == '__main__':
     args = app.arguments()[1:]
     if args:
         if args[0] == '-':
-            obj = json.loads(sys.stdin.read())
+            obj = loadJson(sys.stdin.read())
         else:
             with open(args[0]) as fd:
-                obj = json.load(fd)
+                obj = loadJson(fd.read())
             le.setText(args[0])
 
         tv.setModel(ObjConverter(obj, name=args[0]))
