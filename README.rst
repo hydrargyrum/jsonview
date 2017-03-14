@@ -21,6 +21,19 @@ At the top of the GUI, a single text input is present. Put the path of a JSON fi
 If a command is put in this text input, the command will be run and the JSON result will be viewed.
 This is useful to run `curl` or `jq` commands (or a combination of both, with a pipe in between) and view their result, without having to re-run jsonview.
 
+Table mode
+----------
+
+If the data consists in a list of objects, it can be viewed in "table mode".
+
+Normal tree mode:
+
+.. image:: shot-list.png
+
+Table mode:
+
+.. image:: shot-table.png
+
 Dependencies
 ------------
 
