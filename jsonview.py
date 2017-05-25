@@ -56,6 +56,18 @@ class ObjTable(QStandardItemModel):
         return QStandardItem(repr(item))
 
     def setObj(self, ls):
+        if isinstance(ls, list) and all(isinstance(obj, dict) for obj in ls):
+            pass
+        elif isinstance(ls, dict) and all(isinstance(obj, list) for obj in ls.values()):
+            def get(l, n):
+                try:
+                    return l[n]
+                except IndexError:
+                    return None
+
+            nrows = max(len(v) for v in ls.values())
+            ls = [OrderedDict((k, get(ls[k], n)) for k in ls) for n in range(nrows)]
+
         keys = list(OrderedDict((k, 0) for obj in ls for k in obj.keys()))
         for n, k in enumerate(keys):
             self.setHorizontalHeaderItem(n, QStandardItem(k))
@@ -81,7 +93,7 @@ class TreeView(QTreeView):
 
 
 def loadJson(txt):
-    return json.loads(txt, object_hook=OrderedDict)
+    return json.loads(txt, object_pairs_hook=OrderedDict)
 
 
 class Win(QMainWindow):
@@ -120,7 +132,8 @@ class Win(QMainWindow):
         table = self.isTable.isChecked()
 
         if table:
-            table = isinstance(self.data, list) and all(isinstance(obj, dict) for obj in self.data)
+            table = (isinstance(self.data, list) and all(isinstance(obj, dict) for obj in self.data)) or (
+                isinstance(self.data, dict) and all(isinstance(obj, list) for obj in self.data.values()))
 
         self.clearModels()
         if table:
