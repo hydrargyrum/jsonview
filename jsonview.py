@@ -6,9 +6,9 @@ import os
 import subprocess
 import sys
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLineEdit, QTreeView, QTableView
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QStandardItemModel, QStandardItem
+from PyQt6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLineEdit, QTreeView, QTableView
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QStandardItemModel, QStandardItem
 
 
 class ObjConverter(QStandardItemModel):
@@ -82,7 +82,7 @@ class TreeView(QTreeView):
             self.setRecursive(self.model().index(i, 0, idx), b)
 
     def mouseDoubleClickEvent(self, ev):
-        if ev.button() & Qt.RightButton:
+        if ev.button() & Qt.MouseButton.RightButton:
             idx = self.indexAt(ev.pos())
             if not idx.isValid():
                 return
@@ -199,4 +199,4 @@ if __name__ == '__main__':
         win.setData(obj, name=args[0])
 
     win.show()
-    app.exec_()
+    app.exec()
