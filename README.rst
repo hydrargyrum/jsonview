@@ -37,7 +37,7 @@ Table mode:
 Dependencies
 ------------
 
-jsonview requires Python 3 and uses PyQt5.
+jsonview requires Python 3 and uses PyQt 6.
 
 License
 -------
